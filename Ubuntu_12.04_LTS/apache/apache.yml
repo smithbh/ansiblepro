@@ -1,0 +1,15 @@
+---
+- hosts: webservers
+  user: $user
+
+  vars:
+    base: .
+
+  tasks:
+    - name: apache | update apt repo
+      action: apt update-cache=yes
+
+    - include: setup.yml
+
+  handlers:
+    - include: handler.yml

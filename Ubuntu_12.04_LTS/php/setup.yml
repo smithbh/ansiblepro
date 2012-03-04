@@ -1,0 +1,19 @@
+---
+- name: php | install php5 and extensions
+  action: apt pkg=$item state=installed
+  with_items:
+    - php5
+    - php5-dev
+    - php5-curl
+    - php5-gd
+    - php5-imagick
+    - php5-mysql
+    - php5-xmlrpc
+    - php-apc
+    - php-pear
+
+- name: php | write php.ini
+  action: template src='$base/php/templates/php.ini.j2' dest='/etc/php5/apache2/php.ini'
+
+- name: php | write apc.ini
+  action: template src='$base/php/templates/apc.ini.j2' dest='/etc/php5/apache2/conf.d/apc.ini'

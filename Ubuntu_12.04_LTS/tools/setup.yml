@@ -1,0 +1,37 @@
+---
+- name: install useful serverside tools
+  action: apt pkg=$item state=installed
+  with_items:
+    - curl
+    - dnsutils
+    - emacs
+    - fail2ban
+    - git
+    - imagemagick
+    - make
+    - nmap
+    - unzip
+    - zip
+
+- name: configure git
+  action: copy src='$base/tools/files/gitconfig' dest='/etc/gitconfig' mode='644'
+
+- name: configure emacs
+  action: copy src='$base/tools/files/site-start.el' dest='/etc/emacs/site-start.el' mode='644'
+
+- name: bash prompt
+  action: copy src='$base/tools/files/bash-prompt.sh' dest='/etc/profile.d/bash-prompt.sh' mode='755'
+
+- name: remove local pofile # By default put bash orverrides in /etc/profile.d
+  file: path=.profile state=absent
+
+- name: remove local bashrc # By default put bash orverrides in /etc/profile.d
+  file: path=.bashrc state=absent
+
+- name: configure iptables
+  action: copy src='$base/tools/files/iptables-rules' dest='/etc/iptables-rules' mode='644'
+
+- action: startup script for iptables
+  action: copy src='$base/tools/files/load-iptables-rules' dest='/etc/network/if-pre-up.d/load-iptables-rules' mode='755'
+  notify:
+    - restart network

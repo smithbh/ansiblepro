@@ -1,0 +1,12 @@
+---
+- action: shell pear list -a | grep PHP_CodeSniffer || true
+  register: phpcs_exists
+
+- name: phpcs | install
+  command: pear install PHP_CodeSniffer
+  only_if: "'${phpcs_exists.stdout}' == ''"
+
+- name: phpcs | install coder
+  command: drush dl coder --destination=/usr/share/drush/commands creates=/usr/share/drush/commands/coder
+  notify:
+    - clear drush cache
