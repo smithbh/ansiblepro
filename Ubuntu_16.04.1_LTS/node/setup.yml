@@ -8,7 +8,7 @@
     - make
 
 - name: node | get node repo
-  apt_repository: repo=ppa:chris-lea/node.js state=present
+  command: curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 
 - name: node | update apt repo
   action: apt update-cache=yes
